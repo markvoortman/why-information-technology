@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Why Information Technology?</title>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+ * {
+   font-family: arial;
+   font-size: 16px;
+ }
+ 
+ a { 
+   color: #6d8d23;
+   text-decoration: none;
+ }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script>
+ 
+ $(function() {
+   showIntro(showLearnMore);
+ });
+ 
+ function fail(jqXHR, textStatus, errorThrown) {
+   console.log(jqXHR);
+   console.log(textStatus);
+   console.log(errorThrown);
+   alert(jqXHR.status + " " + jqXHR.statusText + " (see console for more info)");
+ }
+ 
+ function showIntro(cb) {
+   show({
+     text: "The world is changing ...",
+     skip: true,
+     cb: function() {
+       show({
+         text: "... software is driving automation ...",
+         skip: true,
+         cb: function() {
+           show({
+             text: "... will you be prepared?",
+             skip: true,
+             cb: function() {
+               show({
+                 text: "Study <b>Information Technology</b> at the <b>Rowland School of Business</b><br>",
+                 img: "logo.jpg",
+                 enter: "bottom",
+                 skip: true,
+                 cb: cb
+               });
+             }
+           });
+         }
+       });
+     }
+   });
+ }
+ 
+ function showLearnMore(cb) {
+   var div = $("<div>");
+   var first = true;
+   function addHeader(text) {
+     var tmpdiv = $("<div>");
+     div.append(tmpdiv);
+     tmpdiv.css("color", "#6d8d23");
+     if (first) {
+       first = false;
+     }
+     else {
+       tmpdiv.css("margin-top", "3vh");
+     }
+     tmpdiv.css("margin-bottom", "1vh");
+     tmpdiv.append("<b>" + text + "</b>");
+   }
+   function add(text, link) {
+     var a = $("<a>");
+     div.append(a);
+     a.append(text);
+     if (typeof link === "string") {
+       a.attr("href", link);
+       a.attr("target", "_blank");
+     }
+     else {
+       a.attr("href", "javascript:");
+       a.click(link);
+     }
+     div.append("<br>");
+   }
+   addHeader("Why Information Technology?");
+   add("Watch a Video About Automation", showHumansNeedNotApply);
+   add("Learn More About Programming", showLearnMoreAboutProgramming);
+   add("Job Prospects", showJobProspects);
+   addHeader("Why Information Technology @ PPU");
+   add("Learn About the IT Program", "https://it.pointpark.edu/");
+   add("Learn About the Courses", "https://it.pointpark.edu/courses/");
+   add("Learn About Our Students", "https://www.pointpark.edu/news-business/Jose-Flores-18");
+   add("Information Technology Student Organization (ITSO)", "http://itso.pointpark.edu/");
+   add("Participate in a Hackathon", showHackathon);
+   add("Contact a Professor", showContact);
+   show({
+     div: div,
+     intro: true,
+     duration: 0,
+     cb: cb
+   });
+ }
+ 
+ function showJobProspects() {
+   show({
+     text: "<b>Job Prospects</b><br><br>Between 2016 and 2026 approximately 255,400 software developer<br>positions will be created with a median salary of $100,080.<br><a href='https://www.bls.gov/news.release/pdf/ecopro.pdf' target='_blank'>See this PDF from the Bureau of Labor Statistics</a><br><br>Pittsburgh is also a great city to be a software engineer.<br><a href='https://spectrum.ieee.org/view-from-the-valley/at-work/tech-careers/best-city-for-software-engineers' target='_blank'>Click here to learn more</a>",
+     duration: 0,
+     cb: null
+   });
+ }
+ 
+ function showLearnMoreAboutProgramming() {
+   show({
+     text: "<b>Learn More About Programming</b><br><br>Click on the link below to learn more about programming. Especially check out the 'watch the video' link to see some famous people discuss this 'superpower'.<br><br><a href='https://code.org' target='_blank'>code.org</a>",
+     duration: 0,
+     cb: null
+   });
+ }
+ 
+ function showHackathon() {
+   var div = $("<div>");
+   div.css("line-height", "125%");
+   div.append("<b>Hackathon</b><br>We periodically organize hackathons where high school students have a chance to experience all facets of information technology.");
+   var table = $("<table>");
+   div.append(table);
+   table.css("margin-left", "auto");
+   table.css("margin-right", "auto");
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   td.append("Email");
+   var td = $("<td>");
+   tr.append(td);
+   var email = $("<input>");
+   td.append(email);
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   td.append("Name");
+   var td = $("<td>");
+   tr.append(td);
+   var name = $("<input>");
+   td.append(name);
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   var button = $("<button>");
+   td.append(button);
+   button.addClass("ui-button ui-widget ui-corner-all");
+   button.append("Keep Me Informed");
+   button.click(function() {
+     $.ajax({
+       type: "POST",
+       url: "sendmail",
+       data: JSON.stringify({
+         replyTo: email.val(),
+         subject: "Hackathon",
+         text: "Name: " + name.val()
+       }),
+       contentType: "application/json",
+       dataType: "json"
+     }).done(function(data) {
+       console.log(JSON.stringify(data));
+       if (data.error) {
+         alert("Error submitting form!");
+       }
+       else {
+         alert("Successfully submitted form!");
+       }
+     }).fail(fail);
+   });
+   show({
+     div: div,
+     duration: 0,
+     cb: null
+   });
+ }
+ 
+ function showHumansNeedNotApply() {
+   var div = $("<div>");
+   div.append('<iframe width="560" height="315" src="https://www.youtube.com/embed/7Pq-S557XQU?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
+   show({
+     div: div,
+     cb: null
+   });
+ }
+ 
+ function showOurStudents() {
+   show({
+     img: "students.png",
+     duration: 0,
+     cb: null
+   });
+ }
+ 
+ function showContact() {
+   var div = $("<div>");
+   div.css("line-height", "125%");
+   div.append("<b>Contact a Professor</b><br>Ask any question you want.");
+   var table = $("<table>");
+   div.append(table);
+   table.css("margin-left", "auto");
+   table.css("margin-right", "auto");
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   td.append("Email");
+   var td = $("<td>");
+   tr.append(td);
+   var email = $("<input>");
+   td.append(email);
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   td.append("Name");
+   var td = $("<td>");
+   tr.append(td);
+   var name = $("<input>");
+   td.append(name);
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   td.append("Comment");
+   var td = $("<td>");
+   tr.append(td);
+   var comment = $("<textarea>");
+   td.append(comment);
+   comment.css("height", "20vh");
+   var tr = $("<tr>");
+   table.append(tr);
+   var td = $("<td>");
+   tr.append(td);
+   var td = $("<td>");
+   tr.append(td);
+   td.css("text-align", "left");
+   var button = $("<button>");
+   td.append(button);
+   button.addClass("ui-button ui-widget ui-corner-all");
+   button.append("Submit");
+   button.click(function() {
+     $.ajax({
+       type: "POST",
+       url: "sendmail",
+       data: JSON.stringify({
+         replyTo: email.val(),
+         subject: "Why Information Technology?",
+         text: "Name: " + name.val() + "\n\nComment:\n" + comment.val()
+       }),
+       contentType: "application/json",
+       dataType: "json"
+     }).done(function(data) {
+       console.log(JSON.stringify(data));
+       if (data.error) {
+         alert("Error submitting form!");
+       }
+       else {
+         alert("Successfully submitted form!");
+       }
+     }).fail(fail);
+   });
+   show({
+     div: div,
+     duration: 0,
+     cb: null
+   });
+ }
+ 
+ function show(options) {
+   if (options.duration === undefined) {
+     options.duration = 5000;
+   }
+   var body = $(document.body);
+   body.empty();
+   body.css("overflow", "hidden");
+   if (options.skip) {
+     var a = $("<a>");
+     body.append(a);
+     a.append("Skip");
+     a.attr("href", "javascript:");
+     a.css("float", "left");
+     a.click(function() {
+       showLearnMore();
+     });
+   }
+   else if (options.intro) {
+     var a = $("<a>");
+     body.append(a);
+     a.append("Intro");
+     a.attr("href", "javascript:");
+     a.css("float", "left");
+     a.click(function() {
+       showIntro(showLearnMore);
+     });
+   }
+   else {
+     var a = $("<a>");
+     body.append(a);
+     a.append("Back");
+     a.attr("href", "javascript:");
+     a.css("float", "left");
+     a.click(function() {
+       showLearnMore();
+     });
+   }
+   var div = options.div ? options.div : $("<div>");
+   body.append(div);
+   div.css("position", "absolute");
+   div.css("width", body.width()+"px");
+   div.css("left", "50%");
+   div.css("top", "50%");
+   if (options.enter === "top") {
+     div.css("top", "0%");
+   }
+   if (options.enter === "bottom") {
+     div.css("top", "100%");
+   }
+   if (options.enter === "left") {
+     div.css("left", "0%");
+   }
+   if (options.enter === "right") {
+     div.css("left", "100%");
+   }
+   div.css("transform", "translateX(-50%) translateY(-50%)");
+   div.css("text-align", "center");
+   div.css("opacity", "0");
+   if (options.text) {
+     div.append(options.text);
+   }
+   div.css("font-size", body.width()/35+"px");
+   div.find("*").each(function() {
+     $(this).css("font-size", body.width()/35+"px");
+   });
+   if (options.img) {
+     var img = $("<img>");
+     div.append(img);
+     img.attr("src", options.img);
+     img.css("width", body.width()/2+"px");
+   }
+   var tmp = div.animate({
+     zoom: 1,
+     opacity: 1,
+     left: "50%",
+     top: "50%"
+   }, options.duration/2);
+   if (options.cb) {
+     tmp.animate({
+       opacity: 0
+     }, options.duration/2, function() {
+       div.hide();
+       setTimeout(function() {
+         if ($.contains(document, div[0])) {
+           options.cb();
+         }
+       }, 1000);
+     });
+   }
+   div.css("transform", "scale(0)");
+   var scale = 0;
+   var start = Date.now();
+   function redraw() {
+     setTimeout(function() {
+       var elapsed = Date.now() - start;
+       if (elapsed >= options.duration/2) {
+         scale = 1;
+       }
+       else {
+         scale = elapsed / (options.duration/2);
+       }
+       div.css("transform", "translateX(-50%) translateY(-50%) scale(" + scale + ")");
+       if (scale < 1) {
+         redraw();
+       }
+     }, 1);
+   }
+   redraw();
+   /*
+   if (options.intro) {
+     setTimeout(function() {
+       if ($.contains(document, div[0])) {
+         showIntro(showLearnMore);
+       }
+     }, 10000)
+   }
+   */
+ }
+ 
+</script>
+</head>
+<body>
+</body>
+</html>
