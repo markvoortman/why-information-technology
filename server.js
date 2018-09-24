@@ -5,7 +5,7 @@ var nodemailer = require("nodemailer");
 http.createServer(function(req, res) {
   try {
     try {
-      console.log(req.connection.remoteAddress + " - " + new Date() + " - "  + req.url);
+      console.log((req.headers["x-forwarded-for"] || req.connection.remoteAddress) + " - " + new Date() + " - "  + req.url);
     }
     catch (e) {
       console.log("ERROR LOGGING: " + e);
