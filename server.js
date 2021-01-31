@@ -1,10 +1,12 @@
 var http = require("http");
+var ospath = require("path");
 var fs = require("fs");
 var nodemailer = require("nodemailer");
 
 http.createServer(function(req, res) {
   try {
     var path = req.url.replace(/\/?(?:\?.*)?$/, "").toLowerCase();
+    path = ospath.normalize(path);
     if (path === "/sendmail") {
       sendmail(req, res);
     }
@@ -25,7 +27,7 @@ http.createServer(function(req, res) {
 }).listen(5000);
 
 function serveStaticFile(res, path, contentType, responseCode) {
-  if (!path) path = "/index.html";
+  if (!path || path === ".") path = "/index.html";
   if (!responseCode) responseCode = 200;
   if (!contentType) {
     contentType = "application/octet-stream";
